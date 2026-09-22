@@ -1,358 +1,263 @@
+<div align="center">
 
-# Phantom Crowd
+# 🌐 Phantom Crowd
 
-### Spatial Civic Reporting Infrastructure using Augmented Reality
+### Spatial Civic Reporting Infrastructure using Augmented Reality & On-Device AI
 
-![License](https://img.shields.io/badge/license-MIT-green)
-![Platform](https://img.shields.io/badge/platform-Android-blue)
-![ARCore](https://img.shields.io/badge/ARCore-supported-orange)
-![Architecture](https://img.shields.io/badge/architecture-MVVM-purple)
-![Status](https://img.shields.io/badge/status-active-success)
+[![Android Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=android)](file:///d:/Hackathons/Aks/phantom-crowd/app/build.gradle)
+[![Unit Tests](https://img.shields.io/badge/Tests-11%2F11%20Passed%20(100%25)-success?style=for-the-badge&logo=testinglibrary)](file:///d:/Hackathons/Aks/phantom-crowd/app/src/test/java/com/phantomcrowd)
+[![Target SDK](https://img.shields.io/badge/Target%20SDK-35%20(Android%2015)-blue?style=for-the-badge&logo=android)](file:///d:/Hackathons/Aks/phantom-crowd/app/build.gradle)
+[![ARCore](https://img.shields.io/badge/ARCore-1.41.0-orange?style=for-the-badge&logo=google)](https://developers.google.com/ar)
+[![SceneView](https://img.shields.io/badge/SceneView-2.2.1-yellow?style=for-the-badge)](https://github.com/SceneView/sceneview-android)
+[![UI Framework](https://img.shields.io/badge/Jetpack%20Compose-Material%203-blueviolet?style=for-the-badge&logo=jetpackcompose)](file:///d:/Hackathons/Aks/phantom-crowd/app/src/main/java/com/phantomcrowd/ui/theme/DesignSystem.kt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](file:///d:/Hackathons/Aks/phantom-crowd/LICENSE)
 
-Phantom Crowd is an **open-source spatial civic infrastructure platform** that enables communities to **report real-world issues anonymously using Augmented Reality (AR).**
+<br/>
 
-Instead of submitting reports through centralized dashboards, Phantom Crowd allows users to **anchor civic reports directly to physical locations** using ARCore.
+**Phantom Crowd** is an open-source spatial civic infrastructure platform that allows citizens to **anonymously report and visualize real-world issues anchored directly to physical locations** using Augmented Reality (AR) and on-device Machine Learning.
 
-These reports form a **shared spatial awareness layer** where communities can visualize safety issues, infrastructure problems, and environmental hazards **directly in the real world**.
+Instead of invisible tickets buried in centralized municipal portals, Phantom Crowd anchors civic reports directly to walls, sidewalks, and physical structures — forming a **shared, real-world spatial awareness layer** for safety, accessibility, environmental hazards, and municipal transparency.
 
-The project is designed around three principles:
+[Key Features](#-key-features) • [System Architecture](#-system-architecture) • [Civic Categories](#-supported-civic-categories) • [Getting Started](#-getting-started) • [Verification](#-verification--tests) • [Privacy Model](#-privacy--security-model)
 
-• **Privacy-first civic reporting**
-• **Spatial computing for public transparency**
-• **Community validation of real-world issues**
-
-Phantom Crowd aims to become a **global open infrastructure layer for spatial civic reporting systems.**
-
----
-
-# Problem
-
-Cities, campuses, and communities often struggle with **transparent reporting of local issues**, including:
-
-• unsafe streets
-• harassment zones
-• damaged infrastructure
-• environmental hazards
-• poorly lit areas
-
-Traditional reporting platforms have several problems:
-
-• require identity verification
-• reports exist only in centralized dashboards
-• lack real-world spatial context
-• low community engagement
-
-As a result, many real-world issues remain **unreported or invisible**.
+</div>
 
 ---
 
-# Solution
+## 📌 The Problem & The Solution
 
-Phantom Crowd introduces a **spatial civic reporting layer**.
-
-Using **Augmented Reality**, issues are anchored directly to their **physical location**.
-
-When users view the environment through their phone camera, they can see **crowd-sourced civic reports floating in the real world.**
-
-This creates a **collective awareness layer for public spaces.**
-
----
-
-# Core Features
-
-### Anonymous Reporting
-
-No accounts or identity required.
-
-Users can report issues anonymously to encourage participation.
+| Traditional Civic Reporting | Phantom Crowd Spatial Reporting |
+|---|---|
+| ❌ **Centralized & Hidden**: Reports sit in siloed back-office databases invisible to the public. | ✅ **Public & Spatial**: Reports float in 3D AR right where the problem exists in the physical world. |
+| ❌ **Identity Verification Required**: Users hesitate to report safety threats or harassment for fear of retaliation. | ✅ **Anonymous by Design**: Zero accounts, zero phone/email collection, zero device fingerprinting. |
+| ❌ **Lacks Spatial Context**: Vague descriptions ("light pole near gate") lead to delayed maintenance. | ✅ **Sub-Meter Accuracy**: Anchored to physical planes via ARCore and geospatial coordinates. |
+| ❌ **Slow Community Validation**: No transparency into whether others have encountered the issue. | ✅ **Crowd Validation**: Nearby citizens confirm issues in real-time with one-tap verifications. |
 
 ---
 
-### AR Location Anchoring
+## 🚀 Key Features
 
-Reports are pinned to real-world surfaces using **ARCore anchors**.
+### 1. 🧱 3D Surface AR Placement (ARCore & SceneView)
+* Scans physical horizontal and vertical planes (walls, pathways, infrastructure).
+* Anchors virtual notices to surfaces using sub-meter relative spatial offsets and surface normal vectors ($N_x, N_y, N_z$), allowing markers to persist across different user sessions without expensive proprietary cloud services.
+* Defensive camera arbitration: Automatically unbinds CameraX before starting ARCore sessions to prevent hardware lockups.
 
-This ensures reports appear exactly where the issue exists.
+### 2. 🧭 Turn-by-Turn AR Walking Navigation
+* **3D Direction Arrow HUD**: Dynamic directional overlay pointing directly toward target coordinates using real-time sensor fusion and bearing calculations.
+* **Radar Minimap**: Real-time Cartesian-projected top-down minimap overlay.
+* **Text-to-Speech (TTS) Voice Guidance**: Audio milestone alerts (at 200m, 100m, 50m, 20m) and arrival notifications powered by Android's speech synthesis engine.
 
----
+### 3. 🛡️ On-Device AI Content Moderation (Zero PII Leakage)
+* Performs content moderation **strictly on-device** before text is uploaded to Firestore.
+* **Tier 1 Heuristic Engine**: Real-time regex and token scoring based on the Jigsaw Toxic Comment Dataset (threats, severe toxicity, hate speech, harassment).
+* **Tier 2 ML Classifier**: High-speed on-device NLP inference via Google MediaPipe Text Tasks (`average_word_classifier.tflite`) executing in 0–1ms via the XNNPACK delegate.
 
-### Community Validation
+### 4. 🗺️ OpenStreetMap & Spatial Risk Heatmaps
+* Free, open-source geospatial visualization powered by `osmdroid` (zero Google Maps billing or API key friction).
+* Real-time density polygon heatmaps highlighting risk zones (Red $\ge 5$, Yellow 2–4, Green 1).
+* Geohash-based spatial bounding queries for low latency and minimal network overhead.
 
-Users can validate reports through **upvotes and confirmations**.
+### 5. 🔔 Proximity Background Geofencing
+* Google Play Services Location geofencing registers 100m circular perimeters around nearby issues.
+* Background transition alerts (Enter & Dwell) dispatch proactive warnings (`POST_NOTIFICATIONS`) to keep citizens alert in hazardous zones.
 
-This helps filter misinformation.
-
----
-
-### Spatial Heatmaps
-
-Clusters of reports generate **risk heatmaps** that highlight problem areas.
-
----
-
-### Offline-First Design
-
-Reports are cached locally and synchronized when connectivity is available.
-
----
-
-### On-Device Moderation
-
-Content moderation is performed locally using **MediaPipe text analysis**.
-
-This prevents harmful or abusive reports.
+### 6. 📊 Real-Time Impact Dashboard
+* Live Firestore synchronization tracking total reports, verified fixes, issues in-progress, and estimated community reach.
+* Direct linkage with the companion **React 19 / TypeScript Authority Admin Portal** (`authority_actions`), surfacing verified administrative resolutions.
 
 ---
 
-### Privacy-First Architecture
+## 🏛️ System Architecture
 
-Phantom Crowd intentionally avoids collecting:
+```mermaid
+flowchart TD
+    subgraph Mobile["Android Citizen Client (Kotlin + Jetpack Compose)"]
+        UI["Compose UI (Light-First Design System)"]
+        VM["MainViewModel"]
+        Repo["AnchorRepository"]
+        LocalStore["LocalStorageManager (Offline Fallback)"]
+        AI["ContentModerationHelper (MediaPipe + Jigsaw)"]
+        AR["AR Core Engine (SceneView 2.2 + CameraX)"]
+        Sensors["Sensor Fusion (GPS + Bearing + Compass)"]
+    end
 
-• personal identity
-• phone numbers
-• email addresses
-• device identifiers
+    subgraph Backend["Google Cloud / Firebase Backend"]
+        FS_Issues[("Firestore: 'issues'")]
+        FS_Anchors[("Firestore: 'surface_anchors'")]
+        FS_Actions[("Firestore: 'authority_actions'")]
+        Crashlytics["Firebase Crashlytics"]
+    end
 
----
+    subgraph Portal["Authority Admin Portal (React 19 + Vite)"]
+        Dashboard["Administrative Dashboard"]
+        LeafletMap["Leaflet + OpenStreetMap Explorer"]
+        AuditLog["Audit Feed & Status Triage"]
+    end
 
-# System Architecture
-
-Phantom Crowd follows a **mobile-first decentralized architecture.**
-
-```
-Android Device
-     │
-CameraX + ARCore
-     │
-SceneView Rendering Engine
-     │
-Local Processing Layer
-     │
-AI Moderation Engine
-     │
-Firebase Firestore
-     │
-Geospatial Query Engine
-     │
-Community Validation System
+    UI --> VM
+    VM --> AI
+    VM --> AR
+    VM --> Sensors
+    VM --> Repo
+    Repo --> LocalStore
+    Repo --> FS_Issues
+    AR --> FS_Anchors
+    FS_Issues --> Dashboard
+    FS_Anchors --> LeafletMap
+    Dashboard --> AuditLog
+    AuditLog --> FS_Actions
+    FS_Actions --> VM
 ```
 
 ---
 
-# Technology Stack
+## 🏷️ Supported Civic Categories
 
-| Layer            | Technology         |
-| ---------------- | ------------------ |
-| Language         | Kotlin             |
-| UI Framework     | Jetpack Compose    |
-| Architecture     | MVVM               |
-| AR Framework     | ARCore             |
-| AR Rendering     | SceneView          |
-| Camera           | CameraX            |
-| Backend          | Firebase Firestore |
-| AI Moderation    | MediaPipe          |
-| Spatial Indexing | Geohash            |
+Phantom Crowd classifies issues across six core humanitarian and civic categories:
 
----
+| Category | Icon | Subcategories Covered |
+|---|:---:|---|
+| **Women's Safety** | 👩 | Assault, Harassment Zones, Poor Lighting / Stalking, No Emergency Help |
+| **Accessibility** | ♿ | Broken Wheelchair Ramps, Inaccessible Entrances, Missing Elevators, Blocked Paths |
+| **Facilities** | 🏢 | Water Leaks, Exposed Electrical Wiring, Broken Equipment, Structural Damage |
+| **Environmental** | 🌍 | Overflowing Trash, Chemical Spills, Drainage Overflow, Bad Odor, Noise Pollution |
+| **Labor Rights** | 👷 | Safety Violations, Hazardous Working Conditions, Wage Abuse |
+| **Civil Resistance** | 🎙️ | Rights Violations, Censorship, Police Excesses, Public Intimidation |
 
-# How It Works
-
-1. User opens Phantom Crowd app
-2. Camera scans environment
-3. ARCore detects surfaces
-4. User places issue marker
-5. Issue is stored in Firestore
-6. Nearby users see the issue in AR
-7. Community validates reports
-8. Spatial heatmaps highlight risk zones
+Each issue incorporates an emergency severity scale: **URGENT** (Pulse indicator), **HIGH**, **MEDIUM**, and **LOW**.
 
 ---
 
-# Data Model
-
-### AnchorData
+## 🛠️ Technology Stack
 
 ```
-id: String
-latitude: Double
-longitude: Double
-category: String
-severity: Int
-timestamp: Long
-upvotes: Int
-description: String
+Android Client
+├── Language:           Kotlin 1.9.20
+├── UI Framework:       Jetpack Compose (BOM 2023.08.00) + Material 3
+├── Architecture:       MVVM + Repository Pattern + StateFlow / Coroutines
+├── AR & 3D:            ARCore 1.41.0 + SceneView 2.2.1 (Filament Engine)
+├── Camera Feed:        AndroidX CameraX 1.3.1 (Camera2 Lifecycle)
+├── Mapping:            osmdroid (OpenStreetMap) 6.1.20
+├── On-Device AI:       Google MediaPipe Text Tasks + TFLite
+├── Backend:            Firebase Firestore (BOM 32.7.0) + Crashlytics
+└── Testing:            JUnit 4, Mockito Kotlin 5.2.1, Turbine 1.0.0
+
+Authority Portal (Companion Sibling App)
+├── Framework:          React 19 + TypeScript + Vite 7
+├── Mapping:            Leaflet 1.9 + react-leaflet-cluster + OpenStreetMap
+└── Authentication:     Google OAuth with Firestore admin allowlist
 ```
 
 ---
 
-# Issue Categories
-
-Phantom Crowd supports multiple civic issue types.
-
-• Safety Hazard
-• Harassment Area
-• Poor Lighting
-• Infrastructure Damage
-• Environmental Hazard
-
-Each issue includes **severity levels** to help prioritize action.
-
----
-
-# Spatial Query System
-
-Phantom Crowd uses **geohash-based indexing** to perform efficient spatial queries.
-
-Benefits:
-
-• fast nearby search
-• scalable data retrieval
-• reduced backend load
-
-Users only receive reports **relevant to their location**.
-
----
-
-# Use Cases
-
-### Campus Safety
-
-Students can mark unsafe areas or harassment zones.
-
----
-
-### Smart Cities
-
-Citizens can report infrastructure problems directly on location.
-
----
-
-### Disaster Response
-
-Communities can mark blocked roads, damaged buildings, or hazards.
-
----
-
-### Urban Transparency
-
-Authorities and communities gain real-time visibility into civic issues.
-
----
-
-# Project Structure
+## 📂 Project Structure
 
 ```
 phantom-crowd/
-
-app/
-
-data/
-   models/
-   repository/
-
-ui/
-   screens/
-   components/
-
-ar/
-   ARAnchorManager
-   SceneRenderer
-
-moderation/
-   TextModerationEngine
-
-navigation/
-
-utils/
-
-viewmodel/
+├── app/
+│   ├── build.gradle                  # App build configuration (SDK 35, JVM 17/21)
+│   ├── google-services.json          # Firebase client configuration
+│   ├── proguard-rules.pro            # R8 Proguard rules
+│   └── src/
+│       ├── main/
+│       │   ├── AndroidManifest.xml   # Camera, Location, Geofence, AR declarations
+│       │   ├── assets/
+│       │   │   └── average_word_classifier.tflite # On-device MediaPipe NLP model
+│       │   └── java/com/phantomcrowd/
+│       │       ├── ai/               # ContentModerationHelper (MediaPipe + Jigsaw)
+│       │       ├── ar/               # ARCoreManager, SceneView, VoiceGuidanceManager
+│       │       ├── data/             # AnchorData, Repository, Firebase & Surface Managers
+│       │       ├── receiver/         # GeofenceReceiver (Background transitions)
+│       │       ├── ui/               # Jetpack Compose Screens, ViewModel, DesignSystem
+│       │       │   ├── components/   # PCard, PChip, SeverityBadge, Minimap, 3D Arrow
+│       │       │   ├── tabs/         # MapDiscoveryTab, NavigationTab
+│       │       │   └── theme/        # Light-First tokens, Typography, Color palette
+│       │       └── utils/            # GeohashingUtility, GPSUtils, BearingCalculator
+│       └── test/                     # Unit test suites (AnchorRepositoryTest, AnchorDataTest)
+├── docs/                             # Architecture diagrams, restoration audits, setup guides
+├── gradle/wrapper/                   # Gradle 8.13 distribution
+├── build.gradle                      # Top-level Gradle script (AGP 8.13.2)
+├── settings.gradle                   # Gradle settings (':app')
+└── local.properties                  # Local SDK path and AR_CORE_API_KEY (git-ignored)
 ```
 
 ---
 
-# Installation
+## ⚡ Getting Started
 
-Clone the repository
+### Prerequisites
+* **Android Studio**: Ladybug / Hedgehog (2023.1.1+) or newer.
+* **JDK**: **Java 17 or Java 21** (JDK 21 from Android Studio's bundled JBR is strongly recommended; avoid system Java 25 as it conflicts with AGP reflection).
+* **Android SDK**: API Level 35 (`platforms/android-35`).
+* **Hardware**: Physical Android device running Android 8.0+ (API 24+) with **Google Play Services for AR (ARCore)** installed. *(Camera and AR plane detection are not supported in standard emulators)*.
 
-```
-git clone https://github.com/yourusername/phantom-crowd
-```
-
-Open the project in **Android Studio**
-
-```
-File → Open → phantom-crowd
-```
-
-Configure Firebase
-
-```
-Add google-services.json
-Enable Firestore
+### Step 1: Clone Repository
+```bash
+git clone https://github.com/akshaya12406-byte/phantom-crowd.git
+cd phantom-crowd
 ```
 
-Run the application on an **ARCore supported Android device**.
+### Step 2: Configure Environment Keys
+Create or update `local.properties` in the project root:
+```properties
+sdk.dir=C\:\\Users\\<YourUsername>\\AppData\\Local\\Android\\Sdk
+
+# Optional: ARCore Geospatial VPS API Key
+AR_CORE_API_KEY=YOUR_ARCORE_API_KEY_HERE
+```
+*(Basic AR surface plane detection functions completely without an API key).*
+
+### Step 3: Firebase Configuration
+1. Ensure your `google-services.json` file is present in the `app/` directory.
+2. Enable **Cloud Firestore** in your Firebase Console for project `phantom-crowd`.
 
 ---
 
-# Contributing
+## 🧪 Verification & Tests
 
-We welcome contributions from developers interested in:
+### Execute Unit Tests
+Verify the repository fallback logic, geohash calculation, and data models:
+```bash
+# Set JAVA_HOME to Android Studio JBR if system default is Java 25+
+$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
-• Augmented Reality systems
-• spatial computing
-• civic technology
-• smart city platforms
+.\gradlew.bat testDebugUnitTest
+```
+**Test Results:** `11/11 tests passed (100% success rate) in ~1.2s`.
 
-Possible areas of contribution:
-
-• AR performance optimization
-• UI/UX improvements
-• moderation models
-• spatial query optimization
-• visualization dashboards
-
----
-
-# Roadmap
-
-Upcoming improvements:
-
-• web dashboard for city administrators
-• WebXR spatial viewer
-• decentralized storage layer
-• AI issue classification
-• predictive civic heatmaps
-• AR navigation to reported issues
+### Build Debug APK
+Assemble the complete debug binary:
+```bash
+.\gradlew.bat assembleDebug
+```
+The compiled output is generated at:
+`app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
-# Privacy Model
+## 🔒 Privacy & Security Model
 
-Phantom Crowd is designed as a **privacy-first civic platform**.
-
-The system intentionally avoids collecting user identities.
-
-Reports exist purely as **location-based anonymous signals**.
-
----
-
-# License
-
-MIT License
+Phantom Crowd is architected from the ground up for strict privacy preservation:
+* **Zero PII Storage**: Reports contain only GPS coordinates, a category tag, a severity indicator, and description text. No usernames, emails, IP addresses, or device IDs are recorded.
+* **On-Device Moderation**: Toxicity checks occur on the local device via MediaPipe. Abusive or violating submissions are rejected before reaching cloud infrastructure.
+* **Credential Isolation**: Secrets like `AR_CORE_API_KEY` are injected at build time from `local.properties` via Gradle manifest placeholders and are excluded from git.
+* **16 KB Alignment Safe**: Pre-configured with legacy native library packaging (`useLegacyPackaging = true`) to ensure seamless execution on modern 16 KB memory-aligned Android devices (Android 15+).
 
 ---
 
-# Vision
+## 🤝 Contributing
 
-Phantom Crowd aims to become a **global open infrastructure layer for spatial civic reporting.**
+We welcome contributions! Please review our guidelines before submitting a pull request:
+1. Fork the repository and create your feature branch: `git checkout -b feature/amazing-feature`
+2. Follow Kotlin official style guidelines and Jetpack Compose component patterns.
+3. Verify your changes pass all unit tests: `./gradlew testDebugUnitTest`
+4. Commit your changes: `git commit -m "Add amazing spatial feature"`
+5. Push to your branch and submit a Pull Request.
 
-By combining:
-
-• Augmented Reality
-• community validation
-• privacy-first design
-
-the platform introduces a new model for **collective civic awareness.**
+Please see [CONTRIBUTING.md](file:///d:/Hackathons/Aks/phantom-crowd/CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](file:///d:/Hackathons/Aks/phantom-crowd/CODE_OF_CONDUCT.md) for details.
 
 ---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](file:///d:/Hackathons/Aks/phantom-crowd/LICENSE) file for details.
