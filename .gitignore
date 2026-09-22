@@ -1,0 +1,167 @@
+# =====================================================
+# PHANTOM CROWD - ANDROID GITIGNORE
+# =====================================================
+
+# =====================================================
+# BUILD OUTPUTS (Never commit these)
+# =====================================================
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle build output
+.gradle/
+build/
+app/build/
+*/build/
+
+# =====================================================
+# LOCAL CONFIGURATION (Contains sensitive data)
+# =====================================================
+
+# Local configuration file (SDK path, API keys, etc)
+local.properties
+
+# Keystore files (VERY SENSITIVE - never commit!)
+*.jks
+*.keystore
+*.pem
+*.p12
+*.key
+release-key.jks
+debug.keystore
+
+# Google Services (contains API keys)
+google-services.json
+
+# =====================================================
+# IDE SETTINGS (Developer-specific)
+# =====================================================
+
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/private/
+
+# =====================================================
+# ANDROID STUDIO SPECIFIC
+# =====================================================
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
+
+# External native build folder
+.cxx/
+*.cxx/
+.externalNativeBuild/
+
+# Proguard folder
+proguard/
+
+# =====================================================
+# LOG AND TEMP FILES
+# =====================================================
+
+# Log Files
+*.log
+
+# Profiling
+*.hprof
+
+# Crash logs
+hs_err_pid*
+replay_pid*
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# =====================================================
+# OS-SPECIFIC FILES (System junk)
+# =====================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# =====================================================
+# PACKAGE FILES (Don't commit archives)
+# =====================================================
+
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# =====================================================
+# DEBUG/TEST FILES
+# =====================================================
+
+# Build log files (created during debugging)
+*.txt
+!README.txt
+!docs/*.txt
+
+# Test outputs
+/test-results/
+/test-reports/
+
+# =====================================================
+# MISCELLANEOUS WEB FILES (Not part of Android project)
+# =====================================================
+
+# If these are not needed for your project
+index.html
+script.js
+styles.css
+
+# =====================================================
+# FIREBASE (if you need to exclude emulator data)
+# =====================================================
+
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
